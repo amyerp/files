@@ -1,0 +1,39 @@
+[server]
+port = 5300
+checktoken = false
+logdir = '/go/bin/logs/'
+cachedir = '/go/bin/logs/'
+sentry = true
+sysdir = '/var/gufo/'
+tempdir = '/var/gufo/templates/'
+domain = ''
+internal_host = ''
+
+#[sentry]
+#debug = true
+#dsn = ''
+#flush = 5
+#trace = 1.0
+#tracing = true
+
+#[database]
+#charset = ''
+#dbname = ''
+#host = ''
+#password = ''
+#port = ''
+#protocol = ''
+#type = ''
+#user = ''
+#connectionssize = 100
+#poolsize = 100
+#sslmode = 'disable'
+
+
+[microservices]
+[microservices.files]
+type = 'server'
+host = 'files'
+port = '5300'
+entrypointversion = '1.0.0'
+cron = 'false'
