@@ -22,6 +22,8 @@ func Init(t *pb.Request) (response *pb.Response) {
 	switch *t.Param {
 	case "getfile":
 		response = GetFile(t)
+	case "avatar":
+		response = GetAvatar(t)
 	case "getfiles":
 		response = GetFiles(t)
 	default:

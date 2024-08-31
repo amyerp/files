@@ -59,21 +59,30 @@ func GetFiles(t *pb.Request) (response *pb.Response) {
 		limit, _ = strconv.Atoi(fmt.Sprintf("%v", args["limit"]))
 	}
 
-	data := model.Files{}
+	data := []model.Files{}
 
 	var count int64
-	if args["ownerid"] == nil {
-		db.Conn.Debug().Model(data).Where(`ownerid = ?`, ownerid).Count(&count)
-		db.Conn.Debug().Where(`ownerid = ?`, ownerid).Limit(limit).Offset(offset).Find(&data)
+	if args["group"] != nil {
 
-	} else {
 		group := p.Sanitize(fmt.Sprintf("%s", args["group"]))
 		db.Conn.Debug().Model(data).Where(`ownerid = ? AND group = ?`, ownerid, group).Count(&count)
 		db.Conn.Debug().Where(`ownerid = ? AND group = ?`, ownerid, group).Limit(limit).Offset(offset).Find(&data)
 	}
 
+	if args["type"] != nil {
+		group := p.Sanitize(fmt.Sprintf("%s", args["type"]))
+		db.Conn.Debug().Model(data).Where(`ownerid = ? AND type = ?`, ownerid, group).Count(&count)
+		db.Conn.Debug().Where(`ownerid = ? AND type = ?`, ownerid, group).Limit(limit).Offset(offset).Find(&data)
+	}
+
+	if args["group"] == nil && args["type"] == nil {
+		db.Conn.Debug().Model(data).Where(`ownerid = ?`, ownerid).Count(&count)
+		db.Conn.Debug().Where(`ownerid = ?`, ownerid).Limit(limit).Offset(offset).Find(&data)
+	}
+
 	ans["files"] = data
 	ans["filescount"] = count
+	response = Interfacetoresponse(t, ans)
 
 	return response
 }

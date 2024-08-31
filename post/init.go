@@ -65,7 +65,7 @@ func AddFile(t *pb.Request) (response *pb.Response) {
 		return ErrorReturn(t, 500, "000028", err.Error())
 	}
 	dataid := Hashgen(12)
-	data.UUID = dataid
+	//	data.UUID = dataid
 
 	err = db.Conn.Create(&data).Error
 	if err != nil {

@@ -23,7 +23,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func GetFile(t *pb.Request) (response *pb.Response) {
+func GetAvatar(t *pb.Request) (response *pb.Response) {
 
 	ans := make(map[string]interface{})
 	args := ToMapStringInterface(t.Args)
@@ -41,16 +41,16 @@ func GetFile(t *pb.Request) (response *pb.Response) {
 
 	p := bluemonday.UGCPolicy()
 
-	if args["fileid"] == nil {
-		return ErrorReturn(t, 400, "000003", "Missing FileID")
+	if args["ownerid"] == nil {
+		return ErrorReturn(t, 400, "000003", "Missing OwnerID")
 	}
 
-	fileid := p.Sanitize(fmt.Sprintf("%s", args["fileid"]))
+	ownerid := p.Sanitize(fmt.Sprintf("%s", args["ownerid"]))
 
 	file := model.Files{}
-	db.Conn.Debug().Model(file).Where("uuid = ?", fileid).First(&file)
+	db.Conn.Debug().Model(file).Where("ownerid = ? AND type = ?", ownerid, "avatar").First(&file)
 
-	ans["file"] = file
+	ans["avatar"] = file
 	response = Interfacetoresponse(t, ans)
 
 	return response
